@@ -1,19 +1,22 @@
-<h1>Listing tickets</h1>
-
 <table>
   <tr>
+    <th colspan="5">Open tickets</th>
+  </tr>
+  <tr>
+    <th>TicketID</th>
     <th>Summary</th>
     <th>Status</th>
-    <th>Reporter</th>
-    <th></th>
+    <th>Opened</th>
+    <th>Last updated</th>
   </tr>
 
 <% @tickets.each do |ticket| %>
   <tr>
-    <td><%= ticket.summary %></td>
+    <td><%= link_to ticket.id, ticket %></td>
+    <td><%= link_to ticket.summary, ticket %></td>
     <td><%= ticket.state.upcase %></td>
-    <td><%= ticket.reporter %></td>
-    <td><%= link_to 'Show', ticket %></td>
+    <td><%= I18n.l(ticket.created_at) %></td>
+    <td><%= I18n.l(ticket.updated_at) %></td>
   </tr>
 <% end %>
 </table>

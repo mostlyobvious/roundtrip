@@ -1,19 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Summary:</b>
-  <%= @ticket.summary %>
-</p>
-
-<p>
-  <b>Status:</b>
-  <%= @ticket.state.upcase %>
-</p>
-
-<p>
-  <b>Reporter:</b>
-  <%= @ticket.reporter %>
-</p>
-
+<table>
+  <tr>
+    <th colspan="3"><%= "[#{@ticket.id}] #{@ticket.summary}" %></th>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <th>Opened</th>
+    <th>Last updated</th>
+  </tr>
+  <tr>
+    <td><%= @ticket.state.upcase %></td>
+    <td><%= I18n.l(@ticket.created_at) %></td>
+    <td><%= I18n.l(@ticket.updated_at) %></td>
+  </tr>
+</table>
 
 <%= link_to 'Back', tickets_path %>

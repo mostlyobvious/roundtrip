@@ -11,10 +11,16 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :summary %><br />
-    <%= f.text_field :summary %>
-  </div>
+  <table>
+    <tr>
+      <th colspan="2">Open a ticket</th>
+    </tr>
+    <tr>
+      <td><%= f.label :summary %></td>
+      <td><%= f.text_field :summary %></td>
+    </tr>
+  </table>
+
   <div class="actions">
     <%= f.submit "Open ticket" %>
   </div>
