@@ -1,0 +1,23 @@
+<h1>Listing tickets</h1>
+
+<table>
+  <tr>
+    <th>Summary</th>
+    <th>Status</th>
+    <th>Reporter</th>
+    <th></th>
+  </tr>
+
+<% @tickets.each do |ticket| %>
+  <tr>
+    <td><%= ticket.summary %></td>
+    <td><%= ticket.state.upcase %></td>
+    <td><%= ticket.reporter %></td>
+    <td><%= link_to 'Show', ticket %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Open a new ticket', new_ticket_path %>

@@ -9,6 +9,8 @@ gem 'sqlite3'
 gem 'devise'
 gem 'capybara'
 gem 'mongrel', '>= 1.2.0.pre2'
+gem 'activesupport-slices'
+gem 'transitions'
 
 if RUBY_VERSION < '1.9'
   gem "ruby-debug", ">= 0.10.3"

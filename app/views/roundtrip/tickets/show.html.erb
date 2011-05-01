@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Summary:</b>
+  <%= @ticket.summary %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%= @ticket.state.upcase %>
+</p>
+
+<p>
+  <b>Reporter:</b>
+  <%= @ticket.reporter %>
+</p>
+
+
+<%= link_to 'Back', tickets_path %>

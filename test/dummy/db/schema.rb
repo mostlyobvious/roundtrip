@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110501125341) do
+ActiveRecord::Schema.define(:version => 20110501133611) do
+
+  create_table "roundtrip_tickets", :force => true do |t|
+    t.string   "summary",     :limit => 200, :null => false
+    t.string   "state",                      :null => false
+    t.integer  "reporter_id",                :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "roundtrip_tickets", ["reporter_id"], :name => "index_roundtrip_tickets_on_reporter_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
