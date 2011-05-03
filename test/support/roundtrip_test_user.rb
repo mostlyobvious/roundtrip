@@ -3,11 +3,19 @@ require 'capybara/rails'
 module Roundtrip
   class TestUser
     module TicketReporter
-      def open_ticket(summary)
+      def open_ticket(summary, description)
         visit "/support/tickets"
         click_on "Open a new ticket"
         fill_in "Summary", :with => summary
+        fill_in "Description", :with => description
         click_on "Open ticket"
+      end
+
+      def update_ticket(summary, comment)
+        visit "/support/tickets"
+        click_on summary
+        fill_in "Comment", :with => comment
+        click_on "Add update"
       end
     end
 
@@ -46,6 +54,10 @@ module Roundtrip
 
     def see?(*args)
       args.collect { |a| page.has_content?(a) }.all?
+    end
+
+    def not_see?(*args)
+      args.collect { |a| page.has_no_content?(a) }.all?
     end
 
     protected

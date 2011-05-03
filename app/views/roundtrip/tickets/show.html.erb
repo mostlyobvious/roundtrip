@@ -14,6 +14,22 @@
     <td><%= I18n.l(@ticket.created_at) %></td>
     <td><%= I18n.l(@ticket.updated_at) %></td>
   </tr>
+  <% @ticket.comments.each do |comment| %>
+    <tr>
+      <td><%= comment.author.display_name %></td>
+      <td><%= comment.description %></td>
+    </tr> 
+  <% end %>
+  <%= form_for([@ticket, @ticket.comments.build]) do |f| %>
+    <tr>
+      <td><%= f.label :description, "Comment" %></td>
+      <td><%= f.text_area :description %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.submit "Add update" %></td>
+    </tr>
+  <% end %>
 </table>
 
 <%= link_to 'Back', tickets_path %>

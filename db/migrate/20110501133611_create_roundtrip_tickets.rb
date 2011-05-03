@@ -3,7 +3,7 @@ class CreateRoundtripTickets < ActiveRecord::Migration
     create_table :roundtrip_tickets do |t|
       t.string :summary, :null => false, :limit => 200
       t.string :state, :null => false
-      t.references :reporter, :null => false
+      t.integer :reporter_id, :references => :users, :null => false
 
       t.timestamps :null => false
     end

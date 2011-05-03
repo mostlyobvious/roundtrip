@@ -10,7 +10,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110501133611) do
+ActiveRecord::Schema.define(:version => 20110502000400) do
+
+  create_table "roundtrip_comments", :force => true do |t|
+    t.integer  "author_id",   :null => false
+    t.text     "description", :null => false
+    t.integer  "ticket_id",   :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "roundtrip_comments", ["author_id"], :name => "index_roundtrip_comments_on_author_id"
+  add_index "roundtrip_comments", ["ticket_id"], :name => "index_roundtrip_comments_on_ticket_id"
 
   create_table "roundtrip_tickets", :force => true do |t|
     t.string   "summary",     :limit => 200, :null => false

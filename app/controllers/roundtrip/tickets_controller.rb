@@ -11,13 +11,16 @@ module Roundtrip
     end
 
     def new
-      respond_with(@ticket = current_user.tickets.build)
+      @ticket = current_user.tickets.build
+      @ticket.comments.build
+      respond_with(@ticket)
     end
 
     def create
-      @ticket = current_user.tickets.create(params[:ticket])
+      @ticket = current_user.tickets.build(params[:ticket])
       @ticket.reporter = current_user
-
+      @ticket.comments.first.author = current_user
+      @ticket.save
       respond_with(@ticket)
     end
   end

@@ -19,9 +19,15 @@
       <td><%= f.label :summary %></td>
       <td><%= f.text_field :summary %></td>
     </tr>
+    <tr>
+    <%= f.fields_for :comments do |c| %>
+      <td><%= c.label :description %></td>
+      <td><%= c.text_area :description %></td>
+    <% end %>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.submit "Open ticket" %></td>
+    </tr>
   </table>
-
-  <div class="actions">
-    <%= f.submit "Open ticket" %>
-  </div>
 <% end %>
