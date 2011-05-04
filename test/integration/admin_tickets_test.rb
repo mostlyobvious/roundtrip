@@ -2,9 +2,7 @@ require 'test_helper'
 
 class AdminTicketsTest < ActionDispatch::IntegrationTest
   def setup
-    # XXX: how to workaround it?
-    @email, @password = "admin@bofh.org.pl", "potrzebie"
-    @user = User.create!(:email => @email, :password => @password, :password_confirmation => @passwor)
+    @admin = Factory(:admin_user)
   end
 
   test "admin can browse all user tickets" do
@@ -21,7 +19,7 @@ class AdminTicketsTest < ActionDispatch::IntegrationTest
     bob.register_and_login
     bob.open_ticket(summaries.second, descriptions.second)
 
-    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
+    bofh = Roundtrip::TestUser.new(:email => @admin.email)
     bofh.extend(Roundtrip::TestUser::TicketManager)
     bofh.login
     bofh.visit "/support/admin/tickets"
@@ -38,14 +36,32 @@ class AdminTicketsTest < ActionDispatch::IntegrationTest
     cindy.register_and_login
     cindy.open_ticket(summary, description)
 
-    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
+    bofh = Roundtrip::TestUser.new(:email => @admin.email)
     bofh.extend(Roundtrip::TestUser::TicketManager)
     bofh.login
-    comment = "You won't find it. It's not a bug, it's a feture."
+    comment = "You won't find it. It's not a bug, it's a feature."
     bofh.update_ticket(summary, comment)
     assert bofh.see?(summary, description, comment)
 
     cindy.show_ticket(summary)
     assert cindy.see?(summary, description, comment)
+  end
+
+  test "admin can close ticket" do
+    summary, description = "Fuuuuu", "Not working!!!!!!1"
+    alice = Roundtrip::TestUser.new
+    alice.extend(Roundtrip::TestUser::TicketReporter)
+    alice.register_and_login
+    alice.open_ticket(summary, description)
+
+    bofh = Roundtrip::TestUser.new(:email => @admin.email)
+    bofh.extend(Roundtrip::TestUser::TicketManager)
+    bofh.login
+    comment = "SOA #1"
+    bofh.close_ticket(summary, comment)
+    assert bofh.see?(summary, description, comment)
+
+    alice.show_ticket(summary)
+    assert alice.see?(summary, description, comment)
   end
 end

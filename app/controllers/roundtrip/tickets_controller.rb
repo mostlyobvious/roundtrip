@@ -20,6 +20,7 @@ module Roundtrip
       @ticket = current_user.tickets.build(params[:ticket])
       @ticket.reporter = current_user
       @ticket.comments.first.author = current_user
+      @ticket.comments.first.new_ticket = true
       @ticket.save
       respond_with(@ticket)
     end

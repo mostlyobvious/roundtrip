@@ -5,7 +5,10 @@ module Roundtrip
 
     validates :description, :presence => true
     validates :author,      :presence => true
+    validates :ticket,      :presence => true, :updatable => true, :unless => :new_ticket
 
     attr_protected :author_id
+
+    attr_accessor :new_ticket
   end
 end

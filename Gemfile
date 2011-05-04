@@ -21,4 +21,5 @@ end
 group :test do
   gem 'guard-test'
   gem 'libnotify'
+  gem 'factory_girl'
 end

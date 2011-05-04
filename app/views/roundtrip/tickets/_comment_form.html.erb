@@ -1,0 +1,11 @@
+<%= form_for([@ticket, @ticket.comments.build]) do |f| %>
+  <tr>
+    <td><%= f.label :description, "Comment" %></td>
+    <td><%= f.text_area :description %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= f.submit "Add update" %></td>
+  </tr>
+<% end %>
+

@@ -20,16 +20,7 @@
       <td><%= comment.description %></td>
     </tr> 
   <% end %>
-  <%= form_for([@ticket, @ticket.comments.build]) do |f| %>
-    <tr>
-      <td><%= f.label :description, "Comment" %></td>
-      <td><%= f.text_area :description %></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><%= f.submit "Add update" %></td>
-    </tr>
-  <% end %>
+  <%= render :partial => "comment_form" if @ticket.updatable? %>
 </table>
 
 <%= link_to 'Back', tickets_path %>

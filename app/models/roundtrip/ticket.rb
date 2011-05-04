@@ -15,6 +15,15 @@ module Roundtrip
 
     state_machine do
       state :open
+      state :closed
+
+      event :close do
+        transitions :to => :closed, :from => [:open]
+      end
+    end
+
+    def updatable?
+      open?
     end
   end
 end

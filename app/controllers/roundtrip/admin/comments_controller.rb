@@ -7,6 +7,7 @@ module Roundtrip
       @comment = @ticket.comments.build(params[:comment])
       @comment.author = current_user
       @comment.save
+      @ticket.close! if params[:_close]
       respond_with(@comment) do |format|
         format.html { redirect_to admin_ticket_path(@comment.ticket) }
       end

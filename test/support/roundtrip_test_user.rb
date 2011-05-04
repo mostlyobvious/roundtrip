@@ -30,6 +30,13 @@ module Roundtrip
         @session.click_on "Add update"
       end
 
+      def close_ticket(summary, comment = nil)
+        @session.visit "/support/admin/tickets"
+        @session.click_on summary
+        @session.fill_in("Comment", :with => comment) if comment
+        @session.click_on "Close ticket"
+      end
+
       def show_ticket(summary)
         @session.visit "/support/admin/tickets"
         @session.click_on summary
