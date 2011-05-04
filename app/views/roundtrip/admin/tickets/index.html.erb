@@ -1,0 +1,22 @@
+<table>
+  <tr>
+    <th colspan="5">Open tickets</th>
+  </tr>
+  <tr>
+    <th>TicketID</th>
+    <th>Summary</th>
+    <th>Status</th>
+    <th>Opened</th>
+    <th>Last updated</th>
+  </tr>
+
+<% @tickets.each do |ticket| %>
+  <tr>
+    <td><%= link_to ticket.id, admin_ticket_path(ticket) %></td>
+    <td><%= link_to ticket.summary, admin_ticket_path(ticket) %></td>
+    <td><%= ticket.state.upcase %></td>
+    <td><%= I18n.l(ticket.created_at) %></td>
+    <td><%= I18n.l(ticket.updated_at) %></td>
+  </tr>
+<% end %>
+</table>

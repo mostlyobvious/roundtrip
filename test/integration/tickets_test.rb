@@ -3,6 +3,7 @@ require 'test_helper'
 class TicketsTest < ActionDispatch::IntegrationTest
   test "user opens a ticket" do
     alice = Roundtrip::TestUser.new
+    alice.extend(Roundtrip::TestUser::TicketReporter)
     alice.register_and_login
 
     summary, description = "Server is not responding", "When I hit refresh fail-whale appears."
@@ -12,6 +13,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
   test "users provides more details on ticket" do
     alice = Roundtrip::TestUser.new
+    alice.extend(Roundtrip::TestUser::TicketReporter)
     alice.register_and_login
 
     summary, description = "Server is not responding", "When I hit refresh fail-whale appears."
@@ -24,6 +26,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
   test "user can browse tickets" do
     alice = Roundtrip::TestUser.new
+    alice.extend(Roundtrip::TestUser::TicketReporter)
     alice.register_and_login
     summary, description = "Server is not responding", "When I hit refresh fail-whale appears."
     alice.open_ticket(summary, description)

@@ -12,14 +12,29 @@ module Roundtrip
       end
 
       def update_ticket(summary, comment)
-        @session.visit "/support/tickets"
-        @session.click_on summary
+        show_ticket(summary)
         @session.fill_in "Comment", :with => comment
         @session.click_on "Add update"
       end
+
+      def show_ticket(summary)
+        @session.visit "/support/tickets"
+        @session.click_on summary
+      end
     end
 
-    include TicketReporter
+    module TicketManager
+      def update_ticket(summary, comment)
+        show_ticket(summary)
+        @session.fill_in "Comment", :with => comment
+        @session.click_on "Add update"
+      end
+
+      def show_ticket(summary)
+        @session.visit "/support/admin/tickets"
+        @session.click_on summary
+      end
+    end
 
     attr_reader :email, :password
 
@@ -49,7 +64,7 @@ module Roundtrip
       @session.visit "/users/sign_in"
       @session.fill_in "Email", :with => @email
       @session.fill_in "Password", :with => @password
-      @session.click_on "Sign up"
+      @session.click_on "Sign in"
     end
 
     def logout

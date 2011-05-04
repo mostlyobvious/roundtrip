@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   def display_name
     email
   end
+
+  def is_admin?
+    email.start_with? "admin"
+  end
 end
