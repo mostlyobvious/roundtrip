@@ -1,2 +1,3 @@
+script: RAILS_ENV=test rake db:migrate test
 rvm:
   - 1.9.2
