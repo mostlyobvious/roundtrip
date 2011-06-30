@@ -1,25 +1,17 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
-gem 'rails',     :git => 'git://github.com/rails/rails.git'
-gem 'arel',      :git => 'git://github.com/rails/arel.git'
-gem 'rack',      :git => 'git://github.com/rack/rack.git'
-gem 'sprockets', :git => 'git://github.com/sstephenson/sprockets.git'
-
+gem 'rails', '~> 3.1.0.rc4'
 gem 'sqlite3'
-gem 'devise'
-gem 'capybara'
-gem 'mongrel', '>= 1.2.0.pre2'
+gem 'devise', '~> 1.3.0'
 gem 'activesupport-slices'
 gem 'transitions'
 
-if RUBY_VERSION < '1.9'
-  gem 'ruby-debug', ">= 0.10.3"
-else
-  gem 'ruby-debug19'
-end
+gem 'ruby-debug', '>= 0.10.3', :platform => :mri_18
+gem 'ruby-debug19', :platform => :mri_19
 
 group :test do
   gem 'guard-test'
   gem 'libnotify'
   gem 'factory_girl'
+  gem 'capybara', '~> 1.0.0'
 end
