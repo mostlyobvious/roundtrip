@@ -1,68 +1,74 @@
 require 'test_helper'
 
-class AdminTicketsTest < ActionDispatch::IntegrationTest
-  def setup
+class AdminTicketsTest < Bbq::TestCase
+  background do
     admin = Factory(:admin)
     @email, @password = admin.email, admin.password
   end
 
-  test "admin can browse all user tickets" do
-    summaries = ["Forgot my password", "Page is not displayed correctly"]
-    descriptions = ["I lost my yellow note with password under the table!", "My IE renders crap instead of crispy fonts!"]
+  scenario "admin can browse all user tickets" do
+    summaries    = ["Forgot my password", "Page is not displayed correctly"]
+    descriptions = ["I lost my yellow note with password under the table!",
+                    "My IE renders crap instead of crispy fonts!"]
 
     alice = Roundtrip::TestUser.new
-    alice.extend(Roundtrip::TestUser::TicketReporter)
+    alice.roles(:ticket_reporter)
     alice.register_and_login
     alice.open_ticket(summaries.first, descriptions.first)
 
     bob = Roundtrip::TestUser.new
-    bob.extend(Roundtrip::TestUser::TicketReporter)
+    bob.roles(:ticket_reporter)
     bob.register_and_login
     bob.open_ticket(summaries.second, descriptions.second)
 
-    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
-    bofh.extend(Roundtrip::TestUser::TicketManager)
-    bofh.login
-    bofh.visit "/support/admin/tickets"
-    assert bofh.see?(*summaries)
-    bofh.click_on(summaries.second)
-    assert bofh.see?(summaries.second, descriptions.second)
-    assert bofh.not_see?(summaries.first, descriptions.first)
+    charlie = Roundtrip::TestUser.new(:email => @email, :password => @password)
+    charlie.login # charlie was already "registered" in factory as admin
+    charlie.roles(:ticket_manager)
+    charlie.open_tickets_listing
+    charlie.see!(*summaries)
+
+    charlie.click_on(summaries.second)
+    charlie.see!(summaries.second, descriptions.second)
+    charlie.not_see!(summaries.first, descriptions.first)
   end
 
-  test "admin can comment user ticket" do
-    summary, description = "Can't delete ticket", "Where can I find delete button for my ticket?"
+  scenario "admin can comment user ticket" do
+    summary     = "Can't delete ticket"
+    description = "Where can I find delete button for my ticket?"
+
     cindy = Roundtrip::TestUser.new
-    cindy.extend(Roundtrip::TestUser::TicketReporter)
+    cindy.roles(:ticket_reporter)
     cindy.register_and_login
     cindy.open_ticket(summary, description)
 
-    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
-    bofh.extend(Roundtrip::TestUser::TicketManager)
-    bofh.login
+    eve = Roundtrip::TestUser.new(:email => @email, :password => @password)
+    eve.roles(:ticket_manager)
+    eve.login
+
     comment = "You won't find it. It's not a bug, it's a feature."
-    bofh.update_ticket(summary, comment)
-    assert bofh.see?(summary, description, comment)
+    eve.update_ticket(summary, comment)
+    eve.see!(summary, description, comment)
 
     cindy.show_ticket(summary)
-    assert cindy.see?(summary, description, comment)
+    cindy.see!(summary, description, comment)
   end
 
-  test "admin can close ticket" do
+  scenario "admin can close ticket" do
     summary, description = "Fuuuuu", "Not working!!!!!!1"
     alice = Roundtrip::TestUser.new
-    alice.extend(Roundtrip::TestUser::TicketReporter)
+    alice.roles(:ticket_reporter)
     alice.register_and_login
     alice.open_ticket(summary, description)
 
-    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
-    bofh.extend(Roundtrip::TestUser::TicketManager)
-    bofh.login
+    barney = Roundtrip::TestUser.new(:email => @email, :password => @password)
+    barney.roles(:ticket_manager)
+    barney.login
+
     comment = "SOA #1"
-    bofh.close_ticket(summary, comment)
-    assert bofh.see?(summary, description, comment)
+    barney.close_ticket(summary, comment)
+    barney.see!(summary, description, comment)
 
     alice.show_ticket(summary)
-    assert alice.see?(summary, description, comment)
+    alice.see!(summary, description, comment)
   end
 end

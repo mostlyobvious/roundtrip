@@ -15,8 +15,12 @@ module Roundtrip
     end
 
     module TicketReporter
-      def open_ticket(summary, description)
+      def open_tickets_listing
         visit support.tickets_path
+      end
+
+      def open_ticket(summary, description)
+        open_tickets_listing
         click_on "Open a new ticket"
         fill_in  "Summary", :with => summary
         fill_in  "Description", :with => description
@@ -30,8 +34,12 @@ module Roundtrip
     end
 
     module TicketManager
-      def close_ticket(summary, comment = nil)
+      def open_tickets_listing
         visit support.admin_tickets_path
+      end
+
+      def close_ticket(summary, comment = nil)
+        open_tickets_listing
         click_on summary
         fill_in  "Comment", :with => comment if comment
         click_on "Close ticket"
