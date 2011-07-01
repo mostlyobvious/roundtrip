@@ -2,7 +2,8 @@ require 'test_helper'
 
 class AdminTicketsTest < ActionDispatch::IntegrationTest
   def setup
-    @admin = Factory(:admin_user)
+    admin = Factory(:admin)
+    @email, @password = admin.email, admin.password
   end
 
   test "admin can browse all user tickets" do
@@ -19,7 +20,7 @@ class AdminTicketsTest < ActionDispatch::IntegrationTest
     bob.register_and_login
     bob.open_ticket(summaries.second, descriptions.second)
 
-    bofh = Roundtrip::TestUser.new(:email => @admin.email)
+    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
     bofh.extend(Roundtrip::TestUser::TicketManager)
     bofh.login
     bofh.visit "/support/admin/tickets"
@@ -36,7 +37,7 @@ class AdminTicketsTest < ActionDispatch::IntegrationTest
     cindy.register_and_login
     cindy.open_ticket(summary, description)
 
-    bofh = Roundtrip::TestUser.new(:email => @admin.email)
+    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
     bofh.extend(Roundtrip::TestUser::TicketManager)
     bofh.login
     comment = "You won't find it. It's not a bug, it's a feature."
@@ -54,7 +55,7 @@ class AdminTicketsTest < ActionDispatch::IntegrationTest
     alice.register_and_login
     alice.open_ticket(summary, description)
 
-    bofh = Roundtrip::TestUser.new(:email => @admin.email)
+    bofh = Roundtrip::TestUser.new(:email => @email, :password => @password)
     bofh.extend(Roundtrip::TestUser::TicketManager)
     bofh.login
     comment = "SOA #1"
